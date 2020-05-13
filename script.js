@@ -20,27 +20,36 @@ window.addEventListener('load', function () {
     return response.json();
     }).then(function (json){
         console.log(json);
+        //Display the astronauts sorted from most to least time in space.
         json.sort(getSortOrder('hoursInSpace'));
         const container = document.getElementById('container');
         let people = '';
+        //Add a count of astronauts to the page.
+        let count=0;
         // 3. Add each astronaut returned to the web page.
         for (let person of json){
+            //Make the "Active: true" text green, for astronauts that are still active (active is true).
+            let isActive=person.active;
+            let liClass='';
+            if(isActive){
+                liClass='class="active"';
+            }
             people += 
             `<div class="astronaut">
                 <div class="bio">
                     <h3>${person.firstName} ${person.lastName}</h3>
                         <ul>
                             <li>Hours in space: ${person.hoursInSpace}</li>
-                            <li>Active: ${person.active}</li>
+                            <li><span ${liClass}>Active: ${person.active}</span></li>
                             <li>Skills: ${person.skills.join(', ')} </li>
                         </ul>
                 </div>
                 <img class="avatar" src="${person.picture}">
             </div>`;
-
+            count++;
         }
         
-        container.innerHTML = people;
+        container.innerHTML = `<h5 class="astronaut-count">Total Astronauts: ${count}</h5>`+people;
 
     });
 
